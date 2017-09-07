@@ -3,6 +3,8 @@
 
 Android dialog for displaying and selecting nearby bluetooth devices
 
+<img src="art/001.png" />
+
 ## Installation
 Add the JitPack repository to your root **Project** gradle file at the end of repositories:
 ```gradle
