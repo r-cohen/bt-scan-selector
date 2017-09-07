@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="device"
+            type="android.bluetooth.BluetoothDevice"/>
+        <variable
+            name="viewModel"
+            type="com.phearme.btscanselector.BTScanSelectorViewModel"/>
+    </data>
+    <LinearLayout
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="4dp"
+        android:onClick="@{() -> viewModel.onItemResultClick(device)}"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_bluetooth_black_24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            tools:ignore="ContentDescription" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@{device.name}"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.SearchResult.Subtitle"/>
+            <TextView
+                android:text="@{device.address}"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

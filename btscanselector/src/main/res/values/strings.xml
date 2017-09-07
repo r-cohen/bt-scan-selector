@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">btscanselector</string>
+    <string name="nearbyDevices">Nearby Devices</string>
+    <string name="close">Close</string>
+</resources>
