@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
@@ -104,7 +105,13 @@ public class BTScanSelectorDialog extends DialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT) {
-            bindRecyclerView();
+            // wait a few seconds for the bt device to be ready
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    bindRecyclerView();
+                }
+            }, 2000);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
