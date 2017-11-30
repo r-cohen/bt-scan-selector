@@ -37,11 +37,11 @@ Filtering out devices is possible by overriding the `onDeviceFound` method. Retu
 ```java
 BTScanSelectorBuilder.build(MainActivity.this, new ABTScanSelectorEventsHandler() {
 	@Override
-    public boolean onDeviceFound(BluetoothDevice device) {
-        return device.getName().equals("myDevice") || device.getAddress().equals("AA:BB:CC:DD:EE:FF");
-    }
+    	public boolean onDeviceFound(BluetoothDevice device) {
+        	return device.getName().equals("myDevice") || device.getAddress().equals("AA:BB:CC:DD:EE:FF");
+    	}
     
-    @Override
+    	@Override
 	public void onDeviceSelected(BluetoothDevice device) {
 		Log.d("DEBUG", String.format("device selected by user: %s\t%s", device.getName(), device.getAddress()));
 	}
