@@ -5,4 +5,6 @@ import android.bluetooth.BluetoothDevice;
 
 public interface IBTScanSelectorEvents {
     void onDeviceSelected(BluetoothDevice device);
+    boolean onDeviceFound(BluetoothDevice device);
+
 }

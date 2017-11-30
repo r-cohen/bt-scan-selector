@@ -19,16 +19,32 @@ Add the dependency to the **Module** gradle file:
 ```gradle
 dependencies {
 	...
-	compile 'com.github.phearme:bt-scan-selector:1.0.0'
+	compile 'com.github.phearme:bt-scan-selector:1.0.2'
 }
 ```
 
 ## Usage
 ```java
-BTScanSelectorBuilder.build(MainActivity.this, new IBTScanSelectorEvents() {
+BTScanSelectorBuilder.build(MainActivity.this, new ABTScanSelectorEventsHandler() {
 	@Override
 	public void onDeviceSelected(BluetoothDevice device) {
-		Log.d("DEBUG", String.format("%s\t%s", device.getName(), device.getAddress()));
+		Log.d("DEBUG", String.format("device selected by user: %s\t%s", device.getName(), device.getAddress()));
 	}
 });
+```
+### Filter out devices
+Filtering out devices is possible by overriding the `onDeviceFound` method. Return `true` if you want the device to be included in the result, `false` otherwise.
+```java
+BTScanSelectorBuilder.build(MainActivity.this, new ABTScanSelectorEventsHandler() {
+	@Override
+    public boolean onDeviceFound(BluetoothDevice device) {
+        return device.getName().equals("myDevice") || device.getAddress().equals("AA:BB:CC:DD:EE:FF");
+    }
+    
+    @Override
+	public void onDeviceSelected(BluetoothDevice device) {
+		Log.d("DEBUG", String.format("device selected by user: %s\t%s", device.getName(), device.getAddress()));
+	}
+});
+
 ```

@@ -34,9 +34,9 @@ public class BTScanSelectorDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.selector_dialog, null);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        progressBar = view.findViewById(R.id.progressBar);
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (!btAdapter.isEnabled()) {
@@ -86,7 +86,10 @@ public class BTScanSelectorDialog extends DialogFragment {
                     BTScanSelectorDialog.this.getDialog().cancel();
                 }
 
-
+                @Override
+                public boolean onDeviceFound(BluetoothDevice device) {
+                    return mEvents == null || mEvents.onDeviceFound(device);
+                }
             }, new IBTScanDataEvents() {
                 @Override
                 public void onDataChange() { }

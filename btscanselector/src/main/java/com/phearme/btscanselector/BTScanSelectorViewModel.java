@@ -22,25 +22,27 @@ public class BTScanSelectorViewModel extends BaseObservable {
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            switch (action) {
-                case BluetoothDevice.ACTION_FOUND:
-                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    if (devices != null) {
-                        if (!devices.contains(device) && dataEvents != null) {
-                            devices.add(device);
-                            notifyPropertyChanged(com.phearme.btscanselector.BR.devices);
-                            dataEvents.onDataChange();
+            if (action != null) {
+                switch (action) {
+                    case BluetoothDevice.ACTION_FOUND:
+                        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                        if (devices != null) {
+                            if (!devices.contains(device) && dataEvents != null && callbacks.onDeviceFound(device)) {
+                                devices.add(device);
+                                notifyPropertyChanged(com.phearme.btscanselector.BR.devices);
+                                dataEvents.onDataChange();
+                            }
                         }
-                    }
-                    break;
-                case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
-                    setScanning(true);
-                    dataEvents.onScanToggled(scanning);
-                    break;
-                case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                    setScanning(false);
-                    dataEvents.onScanToggled(scanning);
-                    break;
+                        break;
+                    case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
+                        setScanning(true);
+                        dataEvents.onScanToggled(scanning);
+                        break;
+                    case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
+                        setScanning(false);
+                        dataEvents.onScanToggled(scanning);
+                        break;
+                }
             }
         }
     };
