@@ -31,7 +31,7 @@ public class BTScanSelectorViewModel extends BaseObservable {
                 switch (action) {
                     case BluetoothDevice.ACTION_FOUND:
                         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                        int rssi = intent.getIntExtra(EXTRA_RSSI, 100);
+                        int rssi = intent.getShortExtra(EXTRA_RSSI, (short)100);
                         BTScanResultItem deviceItem = new BTScanResultItem(device, rssi);
                         if (devices != null && !devices.contains(deviceItem) && dataEvents != null && callbacks.onDeviceFound(deviceItem.getBluetoothDevice())) {
                             devices.add(deviceItem);
