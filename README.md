@@ -22,6 +22,15 @@ dependencies {
 	compile 'com.github.phearme:bt-scan-selector:1.0.2'
 }
 ```
+Enable databinding in the **Module** grade file:
+```gradle
+android {
+    ...
+    dataBinding {
+        enabled = true
+    }
+}
+```
 
 ## Usage
 ```java
