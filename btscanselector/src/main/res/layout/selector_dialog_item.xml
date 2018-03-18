@@ -5,7 +5,7 @@
     <data>
         <variable
             name="device"
-            type="android.bluetooth.BluetoothDevice"/>
+            type="com.phearme.btscanselector.BTScanResultItem"/>
         <variable
             name="viewModel"
             type="com.phearme.btscanselector.BTScanSelectorViewModel"/>
@@ -17,23 +17,38 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:src="@drawable/ic_bluetooth_black_24dp"
+        <RelativeLayout
+            android:padding="8dp"
+            android:gravity="center"
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            tools:ignore="ContentDescription" />
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iconSignal"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/network_high"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                tools:ignore="ContentDescription" />
+            <TextView
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                android:text="@{device.rssi}"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/iconSignal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="@{device.name}"
+                android:text="@{device.bluetoothDevice.name}"
                 android:maxLines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title"/>
             <TextView
-                android:text="@{device.address}"
+                android:text="@{device.bluetoothDevice.address}"
                 android:maxLines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

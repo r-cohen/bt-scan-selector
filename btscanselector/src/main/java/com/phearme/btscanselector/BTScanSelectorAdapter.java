@@ -1,6 +1,5 @@
 package com.phearme.btscanselector;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -39,7 +38,7 @@ class BTScanSelectorAdapter extends RecyclerView.Adapter<BindingViewHolder> {
 
     @Override
     public void onBindViewHolder(BindingViewHolder holder, int position) {
-        final BluetoothDevice device = viewModel.getDevices().get(position);
+        final BTScanResultItem device = viewModel.getDevices().get(position);
         holder.getViewDataBinding().setVariable(com.phearme.btscanselector.BR.device, device);
         holder.getViewDataBinding().setVariable(com.phearme.btscanselector.BR.viewModel, viewModel);
         holder.getViewDataBinding().executePendingBindings();

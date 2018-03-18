@@ -10,12 +10,17 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import static android.bluetooth.BluetoothDevice.EXTRA_RSSI;
 
 
 public class BTScanSelectorViewModel extends BaseObservable {
-    private List<BluetoothDevice> devices;
+    private List<BTScanResultItem> devices;
     private boolean scanning;
+    private final ComparatorByRssi comparatorByRssi = new ComparatorByRssi();
 
     private IBTScanSelectorEvents callbacks;
     private IBTScanDataEvents dataEvents;
@@ -26,12 +31,13 @@ public class BTScanSelectorViewModel extends BaseObservable {
                 switch (action) {
                     case BluetoothDevice.ACTION_FOUND:
                         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                        if (devices != null) {
-                            if (!devices.contains(device) && dataEvents != null && callbacks.onDeviceFound(device)) {
-                                devices.add(device);
-                                notifyPropertyChanged(com.phearme.btscanselector.BR.devices);
-                                dataEvents.onDataChange();
-                            }
+                        int rssi = intent.getIntExtra(EXTRA_RSSI, 100);
+                        BTScanResultItem deviceItem = new BTScanResultItem(device, rssi);
+                        if (devices != null && !devices.contains(deviceItem) && dataEvents != null && callbacks.onDeviceFound(deviceItem.getBluetoothDevice())) {
+                            devices.add(deviceItem);
+                            Collections.sort(devices, comparatorByRssi);
+                            notifyPropertyChanged(com.phearme.btscanselector.BR.devices);
+                            dataEvents.onDataChange();
                         }
                         break;
                     case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
@@ -61,11 +67,11 @@ public class BTScanSelectorViewModel extends BaseObservable {
     }
 
     @Bindable
-    public List<BluetoothDevice> getDevices() {
+    public List<BTScanResultItem> getDevices() {
         return devices;
     }
 
-    public void setDevices(List<BluetoothDevice> devices) {
+    public void setDevices(List<BTScanResultItem> devices) {
         this.devices = devices;
         notifyPropertyChanged(com.phearme.btscanselector.BR.devices);
     }
@@ -80,19 +86,27 @@ public class BTScanSelectorViewModel extends BaseObservable {
         notifyPropertyChanged(com.phearme.btscanselector.BR.scanning);
     }
 
-    public void onItemResultClick(BluetoothDevice device) {
+    public void onItemResultClick(BTScanResultItem device) {
         if (this.callbacks != null) {
-            this.callbacks.onDeviceSelected(device);
+            this.callbacks.onDeviceSelected(device.getBluetoothDevice());
         }
     }
 
     void terminate(Context context) {
         try {
+            BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
             if (mReceiver != null) {
                 context.unregisterReceiver(mReceiver);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private class ComparatorByRssi implements Comparator<BTScanResultItem> {
+        @Override
+        public int compare(BTScanResultItem btScanResultItem, BTScanResultItem t1) {
+            return btScanResultItem.getRssi() - t1.getRssi();
         }
     }
 }
