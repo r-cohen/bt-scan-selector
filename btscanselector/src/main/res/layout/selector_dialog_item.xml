@@ -25,7 +25,7 @@
             <ImageView
                 android:id="@+id/iconSignal"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/network_high"
+                android:src="@{device.iconResourceId}"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 tools:ignore="ContentDescription" />

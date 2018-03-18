@@ -33,8 +33,13 @@ public class BTScanSelectorViewModel extends BaseObservable {
                         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                         int rssi = intent.getShortExtra(EXTRA_RSSI, (short)100);
                         BTScanResultItem deviceItem = new BTScanResultItem(device, rssi);
-                        if (devices != null && !devices.contains(deviceItem) && dataEvents != null && callbacks.onDeviceFound(deviceItem.getBluetoothDevice())) {
-                            devices.add(deviceItem);
+                        if (devices != null && callbacks.onDeviceFound(deviceItem.getBluetoothDevice())) {
+                            int devicePosition = findDeviceByAddress(deviceItem.getBluetoothDevice().getAddress());
+                            if (devicePosition == -1) {
+                                devices.add(deviceItem);
+                            } else {
+                                devices.get(devicePosition).setRssi(rssi);
+                            }
                             Collections.sort(devices, comparatorByRssi);
                             notifyPropertyChanged(com.phearme.btscanselector.BR.devices);
                             dataEvents.onDataChange();
@@ -110,9 +115,20 @@ public class BTScanSelectorViewModel extends BaseObservable {
         }
     }
 
-    public void refresh() {
+    void refresh() {
         if (!isScanning()) {
             BluetoothAdapter.getDefaultAdapter().startDiscovery();
         }
     }
+
+    private int findDeviceByAddress(String address) {
+        for (int i = 0; i < devices.size(); i++) {
+            if (devices.get(i).getBluetoothDevice().getAddress().equals(address)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
 }
