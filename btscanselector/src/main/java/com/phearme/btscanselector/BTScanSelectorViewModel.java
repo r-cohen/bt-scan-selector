@@ -36,7 +36,7 @@ public class BTScanSelectorViewModel extends BaseObservable {
                         if (devices != null && !devices.contains(deviceItem) && dataEvents != null && callbacks.onDeviceFound(deviceItem.getBluetoothDevice())) {
                             devices.add(deviceItem);
                             Collections.sort(devices, comparatorByRssi);
-                            notifyPropertyChanged(com.phearme.btscanselector.BR.devices);
+                            notifyPropertyChanged(BR.devices);
                             dataEvents.onDataChange();
                         }
                         break;
@@ -73,7 +73,7 @@ public class BTScanSelectorViewModel extends BaseObservable {
 
     public void setDevices(List<BTScanResultItem> devices) {
         this.devices = devices;
-        notifyPropertyChanged(com.phearme.btscanselector.BR.devices);
+        notifyPropertyChanged(BR.devices);
     }
 
     @Bindable
@@ -83,7 +83,7 @@ public class BTScanSelectorViewModel extends BaseObservable {
 
     public void setScanning(boolean scanning) {
         this.scanning = scanning;
-        notifyPropertyChanged(com.phearme.btscanselector.BR.scanning);
+        notifyPropertyChanged(BR.scanning);
     }
 
     public void onItemResultClick(BTScanResultItem device) {
