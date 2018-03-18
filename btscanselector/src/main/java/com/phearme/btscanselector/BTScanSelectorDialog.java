@@ -50,21 +50,28 @@ public class BTScanSelectorDialog extends DialogFragment {
         builder.setView(view)
                 .setCancelable(false)
                 .setTitle(R.string.nearbyDevices)
-                .setNeutralButton(R.string.refresh, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (mAdapter != null) {
-                            mAdapter.refresh();
-                        }
-                    }
-                })
+                .setNeutralButton(R.string.refresh, null)
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         BTScanSelectorDialog.this.getDialog().dismiss();
                     }
                 });
-        return builder.create();
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mAdapter != null) {
+                            mAdapter.refresh();
+                        }
+                    }
+                });
+            }
+        });
+        return dialog;
     }
 
     public void setEvents(IBTScanSelectorEvents events) {
