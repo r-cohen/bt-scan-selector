@@ -39,8 +39,8 @@ class BTScanSelectorAdapter extends RecyclerView.Adapter<BindingViewHolder> {
     @Override
     public void onBindViewHolder(BindingViewHolder holder, int position) {
         final BTScanResultItem device = viewModel.getDevices().get(position);
-        holder.getViewDataBinding().setVariable(com.phearme.btscanselector.BR.device, device);
-        holder.getViewDataBinding().setVariable(com.phearme.btscanselector.BR.viewModel, viewModel);
+        holder.getViewDataBinding().setVariable(BR.device, device);
+        holder.getViewDataBinding().setVariable(BR.viewModel, viewModel);
         holder.getViewDataBinding().executePendingBindings();
     }
 
