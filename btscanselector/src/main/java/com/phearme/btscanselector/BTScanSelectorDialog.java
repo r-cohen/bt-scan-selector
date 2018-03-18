@@ -49,6 +49,14 @@ public class BTScanSelectorDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view)
                 .setTitle(R.string.nearbyDevices)
+                .setNeutralButton(R.string.refresh, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (mAdapter != null) {
+                            mAdapter.refresh();
+                        }
+                    }
+                })
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

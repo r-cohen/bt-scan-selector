@@ -36,7 +36,7 @@ public class BTScanSelectorViewModel extends BaseObservable {
                         if (devices != null && !devices.contains(deviceItem) && dataEvents != null && callbacks.onDeviceFound(deviceItem.getBluetoothDevice())) {
                             devices.add(deviceItem);
                             Collections.sort(devices, comparatorByRssi);
-                            notifyPropertyChanged(BR.devices);
+                            notifyPropertyChanged(com.phearme.btscanselector.BR.devices);
                             dataEvents.onDataChange();
                         }
                         break;
@@ -73,7 +73,7 @@ public class BTScanSelectorViewModel extends BaseObservable {
 
     public void setDevices(List<BTScanResultItem> devices) {
         this.devices = devices;
-        notifyPropertyChanged(BR.devices);
+        notifyPropertyChanged(com.phearme.btscanselector.BR.devices);
     }
 
     @Bindable
@@ -83,7 +83,7 @@ public class BTScanSelectorViewModel extends BaseObservable {
 
     public void setScanning(boolean scanning) {
         this.scanning = scanning;
-        notifyPropertyChanged(BR.scanning);
+        notifyPropertyChanged(com.phearme.btscanselector.BR.scanning);
     }
 
     public void onItemResultClick(BTScanResultItem device) {
@@ -106,7 +106,13 @@ public class BTScanSelectorViewModel extends BaseObservable {
     private class ComparatorByRssi implements Comparator<BTScanResultItem> {
         @Override
         public int compare(BTScanResultItem btScanResultItem, BTScanResultItem t1) {
-            return btScanResultItem.getRssi() - t1.getRssi();
+            return t1.getRssi() - btScanResultItem.getRssi();
+        }
+    }
+
+    public void refresh() {
+        if (!isScanning()) {
+            BluetoothAdapter.getDefaultAdapter().startDiscovery();
         }
     }
 }
