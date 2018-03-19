@@ -39,7 +39,7 @@ BTScanSelectorBuilder.build(MainActivity.this, new ABTScanSelectorEventsHandler(
 	public void onDeviceSelected(BluetoothDevice device) {
 		Log.d("DEBUG", String.format("device selected by user: %s\t%s", device.getName(), device.getAddress()));
 	}
-});
+}, "Dialog Title");
 ```
 ### Filter out devices
 Filtering out devices is possible by overriding the `onDeviceFound` method. Return `true` if you want the device to be included in the result, `false` otherwise.
