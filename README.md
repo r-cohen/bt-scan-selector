@@ -1,7 +1,7 @@
 # bt-scan-selector
 [![](https://jitpack.io/v/phearme/bt-scan-selector.svg)](https://jitpack.io/#phearme/bt-scan-selector)
 
-Android dialog for displaying and selecting nearby bluetooth devices
+Android dialog for displaying and selecting nearby bluetooth devices. Results are sorted by RSSI level.
 
 <img src="art/s001.png"  width="45%" />
 
