@@ -50,7 +50,7 @@ public class BTScanSelectorDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view)
                 .setCancelable(false)
-                .setTitle(dialogTitle)
+                .setTitle(dialogTitle == null ? getString(R.string.nearbyDevices) : dialogTitle)
                 .setNeutralButton(R.string.refresh, null)
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
                     @Override
@@ -80,7 +80,7 @@ public class BTScanSelectorDialog extends DialogFragment {
     }
 
     public void setTitle(String title) {
-        this.dialogTitle = title == null ? getString(R.string.nearbyDevices) : title;
+        this.dialogTitle = title;
     }
 
     @Override
