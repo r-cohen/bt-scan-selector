@@ -24,6 +24,7 @@ public class BTScanSelectorDialog extends DialogFragment {
     private static int REQUEST_ENABLE_BT = 1;
     private static int REQUEST_LOCATION_PERMISSION = 2;
     private IBTScanSelectorEvents mEvents;
+    private String dialogTitle;
     BTScanSelectorAdapter mAdapter;
     RecyclerView recyclerView;
     ProgressBar progressBar;
@@ -31,6 +32,7 @@ public class BTScanSelectorDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        dialogTitle = getString(R.string.nearbyDevices);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.selector_dialog, null);
 
@@ -61,6 +63,7 @@ public class BTScanSelectorDialog extends DialogFragment {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
+                dialog.setTitle(dialogTitle);
                 dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -76,6 +79,10 @@ public class BTScanSelectorDialog extends DialogFragment {
 
     public void setEvents(IBTScanSelectorEvents events) {
         this.mEvents = events;
+    }
+
+    public void setTitle(String title) {
+        this.dialogTitle = title == null ? getString(R.string.nearbyDevices) : title;
     }
 
     @Override
