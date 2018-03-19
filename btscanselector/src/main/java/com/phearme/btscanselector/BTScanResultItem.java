@@ -32,15 +32,15 @@ public class BTScanResultItem {
             iconResourceId = R.drawable.network_high;
             return;
         }
-        if (rssi <= -50 && rssi > -67) {
+        if (rssi <= -50 && rssi > -70) {
             iconResourceId = R.drawable.network_medium;
             return;
         }
-        if (rssi <= -67 && rssi > -70) {
+        if (rssi <= -70 && rssi > -90) {
             iconResourceId = R.drawable.network_low;
             return;
         }
-        if (rssi <= -70) {
+        if (rssi <= -90) {
             iconResourceId = R.drawable.network_no_signal;
             return;
         }

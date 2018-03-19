@@ -117,6 +117,7 @@ public class BTScanSelectorViewModel extends BaseObservable {
 
     void refresh() {
         if (!isScanning()) {
+            devices = new ArrayList<>();
             BluetoothAdapter.getDefaultAdapter().startDiscovery();
         }
     }
