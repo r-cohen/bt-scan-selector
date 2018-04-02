@@ -68,7 +68,9 @@ public class BTScanSelectorViewModel extends BaseObservable {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         context.registerReceiver(mReceiver, filter);
-        BluetoothAdapter.getDefaultAdapter().startDiscovery();
+        if (BluetoothAdapter.getDefaultAdapter() != null) {
+            BluetoothAdapter.getDefaultAdapter().startDiscovery();
+        }
     }
 
     @Bindable
@@ -99,7 +101,9 @@ public class BTScanSelectorViewModel extends BaseObservable {
 
     void terminate(Context context) {
         try {
-            BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+            if (BluetoothAdapter.getDefaultAdapter() != null) {
+                BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+            }
             if (mReceiver != null) {
                 context.unregisterReceiver(mReceiver);
             }
@@ -118,7 +122,9 @@ public class BTScanSelectorViewModel extends BaseObservable {
     void refresh() {
         if (!isScanning()) {
             devices = new ArrayList<>();
-            BluetoothAdapter.getDefaultAdapter().startDiscovery();
+            if (BluetoothAdapter.getDefaultAdapter() != null) {
+                BluetoothAdapter.getDefaultAdapter().startDiscovery();
+            }
         }
     }
 
