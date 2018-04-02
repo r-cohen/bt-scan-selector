@@ -40,7 +40,7 @@ public class BTScanSelectorDialog extends DialogFragment {
         progressBar = view.findViewById(R.id.progressBar);
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (!btAdapter.isEnabled()) {
+        if (btAdapter != null && !btAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
