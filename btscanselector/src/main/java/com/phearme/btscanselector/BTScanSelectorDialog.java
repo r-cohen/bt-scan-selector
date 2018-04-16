@@ -85,13 +85,16 @@ public class BTScanSelectorDialog extends DialogFragment {
 
     @Override
     public void onDestroy() {
-        if (mAdapter != null) {
+        if (mAdapter != null && getActivity() != null) {
             mAdapter.terminate(getActivity());
         }
         super.onDestroy();
     }
 
     private void bindRecyclerView() {
+        if (getActivity() == null) {
+            return;
+        }
         if (getActivity().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
             return;
