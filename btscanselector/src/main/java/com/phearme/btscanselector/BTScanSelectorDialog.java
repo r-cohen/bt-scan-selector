@@ -23,8 +23,6 @@ import android.widget.ProgressBar;
 public class BTScanSelectorDialog extends DialogFragment {
     private static int REQUEST_ENABLE_BT = 1;
     private static int REQUEST_LOCATION_PERMISSION = 2;
-    private IBTScanSelectorEvents mEvents;
-    private String dialogTitle;
     BTScanSelectorAdapter mAdapter;
     RecyclerView recyclerView;
     ProgressBar progressBar;
@@ -48,6 +46,7 @@ public class BTScanSelectorDialog extends DialogFragment {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        String dialogTitle = BTScanSelectorBuilder.getTitle();
         builder.setView(view)
                 .setCancelable(false)
                 .setTitle(dialogTitle == null ? getString(R.string.nearbyDevices) : dialogTitle)
@@ -75,14 +74,6 @@ public class BTScanSelectorDialog extends DialogFragment {
         return dialog;
     }
 
-    public void setEvents(IBTScanSelectorEvents events) {
-        this.mEvents = events;
-    }
-
-    public void setTitle(String title) {
-        this.dialogTitle = title;
-    }
-
     @Override
     public void onDestroy() {
         if (mAdapter != null && getActivity() != null) {
@@ -104,15 +95,17 @@ public class BTScanSelectorDialog extends DialogFragment {
             mAdapter = new BTScanSelectorAdapter(getActivity(), new IBTScanSelectorEvents() {
                 @Override
                 public void onDeviceSelected(BluetoothDevice device) {
-                    if (mEvents != null) {
-                        mEvents.onDeviceSelected(device);
+                    ABTScanSelectorEventsHandler events = BTScanSelectorBuilder.getHandler();
+                    if (events != null) {
+                        events.onDeviceSelected(device);
                     }
                     BTScanSelectorDialog.this.getDialog().cancel();
                 }
 
                 @Override
                 public boolean onDeviceFound(BluetoothDevice device) {
-                    return mEvents == null || mEvents.onDeviceFound(device);
+                    ABTScanSelectorEventsHandler events = BTScanSelectorBuilder.getHandler();
+                    return events == null || events.onDeviceFound(device);
                 }
             }, new IBTScanDataEvents() {
                 @Override
