@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -143,5 +145,16 @@ public class BTScanSelectorDialog extends DialogFragment {
             bindRecyclerView();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        try {
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.add(this, tag);
+            ft.commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

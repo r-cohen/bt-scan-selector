@@ -19,7 +19,7 @@ Add the dependency to the **Module** gradle file:
 ```gradle
 dependencies {
 	...
-	compile 'com.github.phearme:bt-scan-selector:1.1.8'
+	implementation 'com.github.phearme:bt-scan-selector:1.1.9'
 }
 ```
 Enable databinding in the **Module** grade file:
