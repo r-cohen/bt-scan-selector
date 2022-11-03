@@ -1,8 +1,9 @@
 package com.phearme.btscanselector;
 
 
-import android.databinding.BindingAdapter;
 import android.widget.ImageView;
+
+import androidx.databinding.BindingAdapter;
 
 public class DataBindingAdapters {
     @BindingAdapter("android:src")

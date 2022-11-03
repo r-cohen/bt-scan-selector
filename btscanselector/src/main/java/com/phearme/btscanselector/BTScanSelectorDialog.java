@@ -1,5 +1,8 @@
 package com.phearme.btscanselector;
 
+import static android.Manifest.permission.BLUETOOTH_CONNECT;
+import static android.Manifest.permission.BLUETOOTH_SCAN;
+
 import android.Manifest;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -7,24 +10,28 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Objects;
+
 
 public class BTScanSelectorDialog extends DialogFragment {
-    private static int REQUEST_ENABLE_BT = 1;
-    private static int REQUEST_LOCATION_PERMISSION = 2;
+    private static final int REQUEST_ENABLE_BT = 1;
+    private static final int REQUEST_LOCATION_AND_BLUETOOTH_PERMISSIONS = 2;
     BTScanSelectorAdapter mAdapter;
     RecyclerView recyclerView;
     ProgressBar progressBar;
@@ -84,12 +91,33 @@ public class BTScanSelectorDialog extends DialogFragment {
         super.onDestroy();
     }
 
+    private boolean hasRequiredPermissions() {
+        boolean hasLocationLocationPermissions = Objects.requireNonNull(getActivity()).checkCallingOrSelfPermission(
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                Objects.requireNonNull(getActivity()).checkCallingOrSelfPermission(
+                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean hasBluetoothPermissions = true;
+        if (isAtLeastAndroid12()) {
+            hasBluetoothPermissions = getActivity().checkCallingOrSelfPermission(BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED &&
+                    getActivity().checkCallingOrSelfPermission(BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED;
+        }
+        return hasLocationLocationPermissions && hasBluetoothPermissions;
+    }
+
+    private boolean isAtLeastAndroid12() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+    }
+
     private void bindRecyclerView() {
         if (getActivity() == null) {
             return;
         }
-        if (getActivity().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+        if (!hasRequiredPermissions()) {
+            if (isAtLeastAndroid12()) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, BLUETOOTH_SCAN, BLUETOOTH_CONNECT}, REQUEST_LOCATION_AND_BLUETOOTH_PERMISSIONS);
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_AND_BLUETOOTH_PERMISSIONS);
+            }
             return;
         }
 
@@ -140,7 +168,7 @@ public class BTScanSelectorDialog extends DialogFragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_LOCATION_PERMISSION && grantResults.length > 0
+        if (requestCode == REQUEST_LOCATION_AND_BLUETOOTH_PERMISSIONS && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             bindRecyclerView();
         }

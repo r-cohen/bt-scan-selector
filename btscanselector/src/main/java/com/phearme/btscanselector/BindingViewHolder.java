@@ -1,7 +1,7 @@
 package com.phearme.btscanselector;
 
-import android.databinding.ViewDataBinding;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 class BindingViewHolder extends RecyclerView.ViewHolder {
