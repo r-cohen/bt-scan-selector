@@ -5,8 +5,6 @@ Android dialog for displaying and selecting nearby bluetooth devices. Results ar
 
 <img src="art/s001.png"  width="45%" />
 
-[<img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="60" />](https://www.buymeacoffee.com/raphael.cohen)
-
 ## Installation
 Add the JitPack repository to your root **Project** gradle file at the end of repositories:
 ```gradle
@@ -59,3 +57,4 @@ BTScanSelectorBuilder.build(MainActivity.this, new ABTScanSelectorEventsHandler(
 });
 
 ```
+[<img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="60" />](https://www.buymeacoffee.com/raphael.cohen)
